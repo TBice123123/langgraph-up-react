@@ -1,11 +1,31 @@
 """Utility & helper functions."""
 
-from typing import Optional, Union
+import os
+from typing import Any, Optional
 
-from langchain.chat_models import init_chat_model
 from langchain_core.language_models import BaseChatModel
 from langchain_core.messages import BaseMessage
-from langchain_qwq import ChatQwen, ChatQwQ
+from langchain_qwq import ChatQwen
+from langchain_dev_utils import (
+    batch_register_model_provider,
+    load_chat_model as load_chat_model_utils,
+)
+
+from langchain_siliconflow import ChatSiliconFlow
+
+
+batch_register_model_provider(
+    [
+        {
+            "provider": "dashscope",
+            "chat_model": ChatQwen,
+        },
+        {
+            "provider": "siliconflow",
+            "chat_model": ChatSiliconFlow,
+        },
+    ]
+)
 
 
 def normalize_region(region: str) -> Optional[str]:
@@ -42,26 +62,33 @@ def get_message_text(msg: BaseMessage) -> str:
 
 def load_chat_model(
     fully_specified_name: str,
-) -> Union[BaseChatModel, ChatQwQ, ChatQwen]:
+    **kwargs: Any,
+) -> BaseChatModel:
     """Load a chat model from a fully specified name.
 
     Args:
         fully_specified_name (str): String in the format 'provider:model'.
     """
-    provider, model = fully_specified_name.split(":", maxsplit=1)
-    provider_lower = provider.lower()
+    region = os.getenv("REGION")
+    base_url = None
+    if "dashscope" in fully_specified_name:
+        base_url = os.getenv("DASHSCOPE_API_BASE")
+        if base_url is None and region:
+            normalized_region = normalize_region(region)
+            if normalized_region == "prc":
+                base_url = "https://dashscope.aliyuncs.com/compatible-mode/v1"
+            elif normalized_region == "international":
+                base_url = "https://dashscope-intl.aliyuncs.com/compatible-mode/v1"
 
-    # Handle Qwen models specially with dashscope integration
-    if provider_lower == "qwen":
-        from .models import create_qwen_model
+    if "siliconflow" in fully_specified_name:
+        base_url = os.getenv("SILICONFLOW_API_BASE")
+        if base_url is None and region:
+            normalized_region = normalize_region(region)
+            if normalized_region == "prc":
+                base_url = "https://api.siliconflow.cn/v1"
+            elif normalized_region == "international":
+                base_url = "https://api.siliconflow.com/v1"
+    if base_url:
+        kwargs["base_url"] = base_url
 
-        return create_qwen_model(model)
-
-    # Handle SiliconFlow models
-    if provider_lower == "siliconflow":
-        from .models import create_siliconflow_model
-
-        return create_siliconflow_model(model)
-
-    # Use standard langchain initialization for other providers
-    return init_chat_model(model, model_provider=provider)
+    return load_chat_model_utils(fully_specified_name, **kwargs)

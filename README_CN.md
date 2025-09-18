@@ -22,7 +22,7 @@
 
 ### 📚 LangChain 实战系列图书
 
-掌握 Agent 技术先机！从掌握 LangGraph 开始！我们的新书《LangGraph实战》现已出版，[点击查看详情](#langgraph实战书籍) ❤️
+掌握 Agent 技术先机！从掌握 LangGraph 开始！我们的新书《LangGraph 实战》现已出版，[点击查看详情](#langgraph实战书籍) ❤️
 
 ### 📱 加入飞书群
 
@@ -33,36 +33,40 @@
 ## v0.2.0 核心特性
 
 ### 🚀 专为国内开发者准备的模型平台
+
 - **硅基流动 SiliconFlow**: 完整的中国大模型云平台集成，支持 Qwen、GLM、DeepSeek 等国产开源模型
-- **通义千问系列模型**: 通过 `langchain-qwq` 包提供 Qwen 系列模型支持，包括 Qwen-Plus、Qwen-Turbo、QwQ-32B、QvQ-72B
+- **通义千问系列模型**: 通过 `langchain-qwq` 包提供 Qwen 系列模型支持，包括 Qwen-Plus、Qwen-Flash 等一系列模型
 - **OpenAI 兼容**: 支持 GPT-4o、GPT-4o-mini 等模型，以及任何 OpenAI API 格式的提供商
 
 ### 🔬 生产级智能体评估系统
+
 - **双重评估框架**: 图轨迹评估 + 多轮对话仿真，全方位测试智能体性能
 - **LLM-as-Judge 方法论**: 基于场景特定评判标准的专业评估系统
 - **硅基流动模型评估**: 使用国产开源模型进行智能体性能基准测试，提供多种 10B 以下模型便于测试评估
 - **LangSmith 集成**: 完整的评估跟踪和历史分析系统
 
 ### 🛠 Agent 工具集成生态系统
+
 - **模型上下文协议（MCP，Model Context Protocol）**: 运行时动态外部工具加载
 - **DeepWiki MCP 服务器**: 可选加载的 MCP 工具，用于 GitHub 仓库文档访问和问答功能
 - **Web 搜索**: 内置传统的 LangChain 工具（Tavily），用于互联网信息的检索
 
 ### 🆕 LangGraph v0.6 新特性
 
-> [!NOTE]
-> **LangGraph v0.6 新功能**: [LangGraph Context](https://docs.langchain.com/oss/python/context#context-overview) 替代了传统的 `config['configurable']` 模式。运行时上下文现在通过 `invoke/stream` 的 `context` 参数传递，提供了更清洁、更直观的智能体配置方式。
+> [!NOTE] > **LangGraph v0.6 新功能**: [LangGraph Context](https://docs.langchain.com/oss/python/context#context-overview) 替代了传统的 `config['configurable']` 模式。运行时上下文现在通过 `invoke/stream` 的 `context` 参数传递，提供了更清洁、更直观的智能体配置方式。
 
 - **上下文驱动配置**: 通过 `context` 参数传递运行时上下文，而不是 `config['configurable']`
 - **简化的 API**: 为智能体传递运行时配置提供更清洁的接口
 - **向后兼容**: 从旧配置模式的渐进迁移路径
 
 ### 📊 LangGraph Platform 开发支持
+
 - **本地开发服务器**: 完整的 LangGraph Platform 开发环境
 - **70+ 测试用例**: 单元、集成和端到端测试覆盖，完整测试 DeepWiki 工具加载和执行
 - **ReAct 循环验证**: 确保正确的工具-模型交互
 
 ### 🤖 AI 驱动开发
+
 - **使用 Claude Code 开发**: 本模板使用先进的 AI 开发环境构建
 - **持续迭代**: 我们将持续完善和添加新模板
 - **社区驱动**: 为不同场景的 LangGraph 开发提供更多选择
@@ -91,22 +95,26 @@ ReAct 智能体的工作流程：
 ### 使用 uv 安装（推荐）
 
 1. 安装 uv（如果尚未安装）：
+
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
 2. 克隆仓库：
+
 ```bash
 git clone https://github.com/webup/langgraph-up-react.git
 cd langgraph-up-react
 ```
 
 3. 安装依赖（包括开发依赖）：
+
 ```bash
 uv sync --dev
 ```
 
 4. 复制示例环境文件并填入必要的 API 密钥：
+
 ```bash
 cp .env.example .env
 ```
@@ -142,7 +150,7 @@ ENABLE_DEEPWIKI=true
 
 ## 模型配置
 
-模板使用 `qwen:qwen-flash` 作为默认模型，定义在 [`src/common/context.py`](./src/common/context.py) 中。您可以通过三种方式配置不同的模型：
+模板使用 `dashscope:qwen-flash` 作为默认模型，定义在 [`src/common/context.py`](./src/common/context.py) 中。您可以通过三种方式配置不同的模型：
 
 1. **运行时上下文**（编程使用推荐）
 2. **环境变量**
@@ -170,7 +178,7 @@ result = await graph.ainvoke(
 在 `.env` 文件中设置 `MODEL` 环境变量：
 
 ```bash
-MODEL=anthropic:claude-3.5-haiku
+MODEL=dashscope:qwen-flash
 ```
 
 #### 3. LangGraph Studio 助手配置
@@ -192,10 +200,9 @@ MODEL=anthropic:claude-3.5-haiku
 "siliconflow:THUDM/GLM-Z1-9B-0414"    # GLM 推理增强模型
 
 # 通义千问模型（支持区域配置）
-"qwen:qwen-flash"          # 默认模型
-"qwen:qwen-plus"           # 平衡性能
-"qwen:qwq-32b-preview"     # 推理模型
-"qwen:qvq-72b-preview"     # 多模态推理
+"dashscope:qwen-flash"          # 默认模型
+"dashscope:qwen-plus"           # 平衡性能
+"dashscope:qwen-vl-max"          # 视觉模型
 
 # Anthropic 模型
 "anthropic:claude-4-sonnet"
@@ -205,40 +212,51 @@ MODEL=anthropic:claude-3.5-haiku
 ### 各提供商 API 密钥设置
 
 #### 硅基流动（推荐用于评估）
+
 ```bash
 SILICONFLOW_API_KEY=your-siliconflow-api-key
 ```
+
 获取 API 密钥：[硅基流动控制台](https://cloud.siliconflow.cn/me/account/ak) - 支持 Qwen、GLM、DeepSeek 等国产开源模型
 
 #### 通义千问（默认）
+
 ```bash
 DASHSCOPE_API_KEY=your-dashscope-api-key
 REGION=cn  # 或 'international' 使用国际端点
 ```
+
 获取 API 密钥：[DashScope 控制台](https://dashscope.console.aliyun.com/)
 
 #### OpenAI
+
 ```bash
 OPENAI_API_KEY=your-openai-api-key
 ```
+
 获取 API 密钥：[OpenAI 平台](https://platform.openai.com/api-keys)
 
 #### Anthropic
+
 ```bash
 ANTHROPIC_API_KEY=your-anthropic-api-key
 ```
+
 获取 API 密钥：[Anthropic 控制台](https://console.anthropic.com/)
 
 #### OpenAI 兼容提供商
+
 ```bash
 OPENAI_API_KEY=your-provider-api-key
 OPENAI_API_BASE=https://your-provider-api-base-url/v1
 ```
+
 支持 SiliconFlow、Together AI、Groq 和其他 OpenAI 兼容 API。
 
 ## 自定义说明
 
 ### 添加新工具
+
 在 [`src/common/tools.py`](./src/common/tools.py) 中扩展智能体功能：
 
 ```python
@@ -249,9 +267,11 @@ async def my_custom_tool(input: str) -> str:
 ```
 
 ### 添加新的 MCP 工具
+
 集成外部 MCP 服务器以获得更多功能：
 
 1. **配置 MCP 服务器**，在 [`src/common/mcp.py`](./src/common/mcp.py) 中：
+
 ```python
 MCP_SERVERS = {
     "deepwiki": {
@@ -267,6 +287,7 @@ MCP_SERVERS = {
 ```
 
 2. **添加服务器函数**：
+
 ```python
 async def get_context7_tools() -> List[Callable[..., Any]]:
     """获取 Context7 文档工具。"""
@@ -274,42 +295,47 @@ async def get_context7_tools() -> List[Callable[..., Any]]:
 ```
 
 3. **在上下文中启用** - 添加上下文标志并在 `get_tools()` 函数中加载工具：
+
 ```python
 # 在 src/common/tools.py 中
 if context.enable_context7:
     tools.extend(await get_context7_tools())
 ```
 
-> [!TIP]
-> **Context7 示例**：MCP 配置中已包含注释的 Context7 服务器设置。Context7 提供最新的库文档和示例 - 只需取消注释配置并添加上下文标志即可启用。
+> [!TIP] > **Context7 示例**：MCP 配置中已包含注释的 Context7 服务器设置。Context7 提供最新的库文档和示例 - 只需取消注释配置并添加上下文标志即可启用。
 
 ### 修改系统提示
+
 编辑 [`src/common/prompts.py`](./src/common/prompts.py) 中的默认系统提示。
 
 ## 开发工作流
 
 ### 启动开发服务器
+
 ```bash
 make dev        # 启动 LangGraph 开发服务器（uv run langgraph dev --no-browser)
 make dev_ui     # 启动带 LangGraph Studio Web UI 界面的服务器
 ```
 
 ### 测试
+
 ```bash
 make test                    # 运行单元和集成测试（默认）
 make test_unit               # 仅运行单元测试
-make test_integration        # 运行集成测试  
+make test_integration        # 运行集成测试
 make test_e2e               # 运行端到端测试（需要运行服务器）
 make test_all               # 运行所有测试套件
 ```
 
 ### 代码质量
+
 ```bash
 make lint       # 运行 linter（ruff + mypy）
 make format     # 使用 ruff 自动格式化代码
 ```
 
 ### LangGraph Studio 功能
+
 - **可视化图结构**: 查看智能体的执行流程
 - **实时调试**: 逐步执行和状态检查
 - **交互式测试**: 直接在 Studio 中测试智能体
@@ -324,6 +350,7 @@ make format     # 使用 ruff 自动格式化代码
 - **`langgraph.json`**: LangGraph Agent 的各项基础配置
 
 关键组件：
+
 - **`src/common/mcp.py`**: 外部文档源的 MCP 客户端管理
 - **动态工具加载**: 基于上下文配置的运行时工具选择
 - **上下文系统**: 支持环境变量的集中化配置
@@ -346,6 +373,7 @@ make format     # 使用 ruff 自动格式化代码
 本模板提供业界领先的综合评估系统，采用双重评估方法论：
 
 #### 🎯 图轨迹评估（Graph Trajectory Evaluation）
+
 测试智能体的推理模式和工具使用决策：
 
 ```bash
@@ -358,11 +386,13 @@ make eval_graph_glm     # GLM-4-9B-0414 模型
 ```
 
 **评估场景**：
+
 - **简单问题**: "法国的首都是什么？" - 测试基础事实的效率回答
 - **搜索必需**: "人工智能的最新新闻是什么？" - 测试工具使用和信息综合
 - **多步推理**: "可再生能源的优缺点和最新发展是什么？" - 测试复杂分析任务
 
 #### 🔄 多轮对话仿真（Multi-turn Chat Simulation）
+
 测试对话能力和角色适应性：
 
 ```bash
@@ -378,6 +408,7 @@ make eval_multiturn_hacker   # 对抗性用户角色
 ```
 
 **角色场景**：
+
 - **写作助手** × 用户角色：专业邮件撰写协作
 - **客服代表** × 用户角色：账户问题解决支持
 - **面试官** × 用户角色：技术面试流程管理
@@ -413,15 +444,15 @@ make eval_multiturn   # 多轮对话评估（需要服务器）
 ```
 
 # 查看更多版本信息
+
 # 访问 GitHub Releases 页面查看所有版本发布说明：https://github.com/webup/langgraph-up-react/releases
 
-> [!TIP]
-> **硅基流动 API 密钥**: 在 [硅基流动控制台](https://cloud.siliconflow.cn/me/account/ak) 获取 API 密钥，支持 Qwen、GLM、DeepSeek 等多种国产开源模型。
+> [!TIP] > **硅基流动 API 密钥**: 在 [硅基流动控制台](https://cloud.siliconflow.cn/me/account/ak) 获取 API 密钥，支持 Qwen、GLM、DeepSeek 等多种国产开源模型。
 
 ### 评估系统特性
 
 - **🎯 LLM-as-Judge 方法论**: 场景特定的自定义评判标准
-- **📊 专业报告系统**: 详细的评分提取和排名系统  
+- **📊 专业报告系统**: 详细的评分提取和排名系统
 - **🔍 轨迹标准化**: 兼容 JSON 序列化的轨迹处理
 - **📈 LangSmith 集成**: 全面的跟踪和历史分析
 - **⚙️ 集中化配置**: `config.py` 中的统一评估设置
@@ -431,14 +462,17 @@ make eval_multiturn   # 多轮对话评估（需要服务器）
 ## 开发与社区
 
 ### 路线图与贡献
+
 - 📋 **[ROADMAP.md](./ROADMAP.md)** - 当前里程碑和未来规划
 - 🐛 **欢迎 Issues 和 PR** - 通过 [提交 issue](https://github.com/webup/langgraph-up-react/issues) 或提交 pull request 帮助我们改进
 - 🤖 **使用 Claude Code 开发** - 本模板使用 [Claude Code](https://claude.ai/code) 积极开发维护
 
 ### 参与贡献
+
 我们鼓励社区贡献！无论是：
+
 - 报告 bug 或建议新功能
-- 添加新工具或模型集成  
+- 添加新工具或模型集成
 - 改进文档
 - 分享您的用例和模板
 
@@ -463,6 +497,7 @@ make eval_multiturn   # 多轮对话评估（需要服务器）
 本项目的构建离不开以下优秀的开源项目和服务平台：
 
 ### LangChain 官方项目
+
 - **[LangGraph](https://github.com/langchain-ai/langgraph)** - 强大的智能体图构建框架
 - **[LangChain](https://github.com/langchain-ai/langchain)** - 构建 LLM 应用的核心库
 - **[AgentEvals](https://github.com/langchain-ai/agentevals)** - 智能体评估框架，提供 LLM-as-Judge 方法论
@@ -470,10 +505,12 @@ make eval_multiturn   # 多轮对话评估（需要服务器）
 - **[LangSmith](https://smith.langchain.com/)** - LLM 应用跟踪和调试平台
 
 ### LangChain 社区集成
+
 - **[langchain-siliconflow](https://pypi.org/project/langchain-siliconflow/)** - 硅基流动模型集成，提供国产开源模型支持
 - **[langchain-qwq](https://pypi.org/project/langchain-qwq/)** - 阿里云百炼平台模型集成，支持通义千问系列
 
 ### MaaS 平台服务
+
 - **硅基流动 (SiliconFlow)** - 提供国产开源模型的 MaaS 平台（中国用户 10B 以下模型永久免费）
 - **阿里云百炼 (DashScope)** - 通义千问系列模型服务平台
 

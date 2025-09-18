@@ -21,33 +21,36 @@ The core logic, defined in `src/react_agent/graph.py`, demonstrates a flexible R
 ## Features
 
 ### Multi-Provider Model Support
+
 - **SiliconFlow Integration**: Complete support for Chinese MaaS platform with open-source models (Qwen, GLM, DeepSeek, etc.)
-- **Qwen Models**: Complete Qwen series support via `langchain-qwq` package, including Qwen-Plus, Qwen-Turbo, QwQ-32B, QvQ-72B
+- **Qwen Models**: Complete Qwen series support via `langchain-qwq` package, including Qwen-Plus, Qwen-Flash
 - **OpenAI**: GPT-4o, GPT-4o-mini, etc.
   - **OpenAI-Compatible**: Any provider supporting OpenAI API format via custom API key and base URL
 - **Anthropic**: Claude 4 Sonnet, Claude 3.5 Haiku, etc.
 
 ### Production-Grade Agent Evaluation System
+
 - **Dual Evaluation Framework**: Graph trajectory evaluation + Multi-turn chat simulation for comprehensive agent testing
 - **LLM-as-Judge Methodology**: Scenario-specific evaluation criteria with professional assessment systems
 - **Multi-Model Benchmarking**: Compare performance across different model providers and configurations
 - **LangSmith Integration**: Complete evaluation tracking with historical analysis and collaboration features
 
 ### Agent Tool Integration Ecosystem
+
 - **Model Context Protocol (MCP)**: Dynamic external tool loading at runtime
-- **DeepWiki MCP Server**: Optional MCP tools for GitHub repository documentation access and Q&A capabilities  
+- **DeepWiki MCP Server**: Optional MCP tools for GitHub repository documentation access and Q&A capabilities
 - **Web Search**: Built-in traditional LangChain tools (Tavily) for internet information retrieval
 
 ### LangGraph v0.6 Features
 
-> [!NOTE]
-> **New in LangGraph v0.6**: [LangGraph Context](https://docs.langchain.com/oss/python/context#context-overview) replaces the traditional `config['configurable']` pattern. Runtime context is now passed to the `context` argument of `invoke/stream`, providing a cleaner and more intuitive way to configure your agents.
+> [!NOTE] > **New in LangGraph v0.6**: [LangGraph Context](https://docs.langchain.com/oss/python/context#context-overview) replaces the traditional `config['configurable']` pattern. Runtime context is now passed to the `context` argument of `invoke/stream`, providing a cleaner and more intuitive way to configure your agents.
 
 - **Context-Driven Configuration**: Runtime context passed via `context` parameter instead of `config['configurable']`
 - **Simplified API**: Cleaner interface for passing runtime configuration to your agents
 - **Backward Compatibility**: Gradual migration path from the old configuration pattern
 
 ### LangGraph Platform Development Support
+
 - **Local Development Server**: Complete LangGraph Platform development environment
 - **70+ Test Cases**: Unit, integration, and end-to-end testing coverage with complete DeepWiki tool loading and execution testing
 - **ReAct Loop Validation**: Ensures proper tool-model interactions
@@ -76,22 +79,26 @@ See these LangSmith traces to understand how the agent works in practice:
 ### Setup with uv (Recommended)
 
 1. Install uv (if not already installed):
+
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
 2. Clone the repository:
+
 ```bash
 git clone https://github.com/webup/langgraph-up-react.git
 cd langgraph-up-react
 ```
 
 3. Install dependencies (including dev dependencies):
+
 ```bash
 uv sync --dev
 ```
 
 4. Copy the example environment file and fill in essential keys:
+
 ```bash
 cp .env.example .env
 ```
@@ -120,7 +127,7 @@ OPENAI_API_BASE=your-openai-base-url
 # Optional: If using Anthropic models
 ANTHROPIC_API_KEY=your-anthropic-api-key
 
-# Optional: Regional API support for Qwen models  
+# Optional: Regional API support for Qwen models
 REGION=international  # or 'cn' for China mainland (default)
 
 # Optional: Always enable DeepWiki documentation tools
@@ -131,49 +138,60 @@ The primary [search tool](./src/common/tools.py) uses [Tavily](https://tavily.co
 
 ## Model Configuration
 
-The template uses `qwen:qwen-flash` as the default model, defined in [`src/common/context.py`](./src/common/context.py). You can configure different models in three ways:
+The template uses `dashscope:qwen-flash` as the default model, defined in [`src/common/context.py`](./src/common/context.py). You can configure different models in three ways:
 
 1. **Runtime Context** (recommended for programmatic usage)
-2. **Environment Variables** 
+2. **Environment Variables**
 3. **LangGraph Studio Assistant Configuration**
 
 ### API Key Setup by Provider
 
 #### SiliconFlow (Recommended for Evaluation)
+
 ```bash
 SILICONFLOW_API_KEY=your-siliconflow-api-key
 ```
+
 Get your API key: [SiliconFlow Console](https://siliconflow.com) - Supports Qwen, GLM, DeepSeek and other open-source models
 
 #### OpenAI
+
 ```bash
 OPENAI_API_KEY=your-openai-api-key
 ```
+
 Get your API key: [OpenAI Platform](https://platform.openai.com/api-keys)
 
-#### Anthropic  
+#### Anthropic
+
 ```bash
 ANTHROPIC_API_KEY=your-anthropic-api-key
 ```
+
 Get your API key: [Anthropic Console](https://console.anthropic.com/)
 
 #### Qwen Models (Default)
+
 ```bash
 DASHSCOPE_API_KEY=your-dashscope-api-key
 REGION=international  # or 'cn' for China mainland
 ```
+
 Get your API key: [DashScope Console](https://dashscope.console.aliyun.com/)
 
 #### OpenAI-Compatible Providers
+
 ```bash
 OPENAI_API_KEY=your-provider-api-key
 OPENAI_API_BASE=https://your-provider-api-base-url/v1
 ```
+
 Supports SiliconFlow, Together AI, Groq, and other OpenAI-compatible APIs.
 
 ## How to Customize
 
 ### Add New Tools
+
 Extend the agent's capabilities by adding tools in [`src/common/tools.py`](./src/common/tools.py):
 
 ```python
@@ -185,9 +203,11 @@ async def my_custom_tool(input: str) -> str:
 ```
 
 ### Add New MCP Tools
+
 Integrate external MCP servers for additional capabilities:
 
 1. **Configure MCP Server** in [`src/common/mcp.py`](./src/common/mcp.py):
+
 ```python
 MCP_SERVERS = {
     "deepwiki": {
@@ -203,6 +223,7 @@ MCP_SERVERS = {
 ```
 
 2. **Add Server Function**:
+
 ```python
 async def get_context7_tools() -> List[Callable[..., Any]]:
     """Get Context7 documentation tools."""
@@ -210,14 +231,14 @@ async def get_context7_tools() -> List[Callable[..., Any]]:
 ```
 
 3. **Enable in Context** - Add context flag and load tools in `get_tools()` function:
+
 ```python
 # In src/common/tools.py
 if context.enable_context7:
     tools.extend(await get_context7_tools())
 ```
 
-> [!TIP]
-> **Context7 Example**: The MCP configuration already includes a commented Context7 server setup. Context7 provides up-to-date library documentation and examples - simply uncomment the configuration and add the context flag to enable it.
+> [!TIP] > **Context7 Example**: The MCP configuration already includes a commented Context7 server setup. Context7 provides up-to-date library documentation and examples - simply uncomment the configuration and add the context flag to enable it.
 
 ### Model Configuration Methods
 
@@ -263,10 +284,10 @@ In LangGraph Studio, configure models through [Assistant management](https://doc
 "siliconflow:THUDM/GLM-Z1-9B-0414"    # GLM reasoning-enhanced model
 
 # Qwen models (with regional support)
-"qwen:qwen-flash"          # Default model
-"qwen:qwen-plus"           # Balanced performance
-"qwen:qwq-32b-preview"     # Reasoning model
-"qwen:qvq-72b-preview"     # Multimodal reasoning
+"dashscope:qwen-flash"          # Default model
+"dashscope:qwen-plus"           # Balanced performance
+"dashscope:qwq-32b-preview"     # Reasoning model
+"dashscope:qvq-72b-preview"     # Multimodal reasoning
 
 # Anthropic models
 "anthropic:claude-4-sonnet"
@@ -274,16 +295,21 @@ In LangGraph Studio, configure models through [Assistant management](https://doc
 ```
 
 ### Customize Prompts
+
 Update the system prompt in [`src/common/prompts.py`](./src/common/prompts.py) or via the LangGraph Studio interface.
 
 ### Modify Agent Logic
+
 Adjust the ReAct loop in [`src/react_agent/graph.py`](./src/react_agent/graph.py):
+
 - Add new graph nodes
-- Modify conditional routing logic  
+- Modify conditional routing logic
 - Add interrupts or human-in-the-loop interactions
 
 ### Configuration Options
+
 Runtime configuration is managed in [`src/common/context.py`](./src/common/context.py):
+
 - Model selection
 - Search result limits
 - Tool toggles
@@ -291,21 +317,24 @@ Runtime configuration is managed in [`src/common/context.py`](./src/common/conte
 ## Development
 
 ### Development Server
+
 ```bash
 make dev        # Start LangGraph development server (uv run langgraph dev --no-browser)
 make dev_ui     # Start with LangGraph Studio Web UI in browser
 ```
 
 ### Testing
+
 ```bash
 make test                    # Run unit and integration tests (default)
 make test_unit               # Run unit tests only
-make test_integration        # Run integration tests  
+make test_integration        # Run integration tests
 make test_e2e               # Run end-to-end tests (requires running server)
 make test_all               # Run all test suites
 ```
 
 ### Code Quality
+
 ```bash
 make lint       # Run linters (ruff + mypy)
 make format     # Auto-format code
@@ -313,6 +342,7 @@ make lint_tests # Lint test files only
 ```
 
 ### Development Features
+
 - **Hot Reload**: Local changes automatically applied
 - **State Editing**: Edit past state and rerun from specific points
 - **Thread Management**: Create new threads or continue existing conversations
@@ -328,6 +358,7 @@ The template uses a modular architecture:
 - **`langgraph.json`**: LangGraph Agent basic configuration settings
 
 Key components:
+
 - **`src/common/mcp.py`**: MCP client management for external documentation sources
 - **Dynamic tool loading**: Runtime tool selection based on context configuration
 - **Context system**: Centralized configuration with environment variable support
@@ -350,6 +381,7 @@ Agent evaluation is crucial for production-grade AI applications because it:
 The template provides a comprehensive evaluation system using a dual-methodology approach:
 
 #### 🎯 Graph Trajectory Evaluation
+
 Tests agent reasoning patterns and tool usage decisions:
 
 ```bash
@@ -362,11 +394,13 @@ make eval_graph_glm     # GLM-4-9B-0414 model
 ```
 
 **Evaluation Scenarios**:
+
 - **Simple Question**: "What is the capital of France?" - Tests efficiency for basic facts
 - **Search Required**: "What's the latest news about artificial intelligence?" - Tests tool usage and information synthesis
 - **Multi-step Reasoning**: "What are the pros and cons of renewable energy, and what are the latest developments?" - Tests complex analytical tasks
 
 #### 🔄 Multi-turn Chat Simulation
+
 Tests conversational capabilities through role-persona interactions:
 
 ```bash
@@ -382,6 +416,7 @@ make eval_multiturn_hacker   # Adversarial user persona
 ```
 
 **Role Scenarios**:
+
 - **Writing Assistant** × User Personas: Professional email collaboration
 - **Customer Service** × User Personas: Account troubleshooting support
 - **Interviewer** × User Personas: Technical interview management
@@ -433,14 +468,17 @@ For detailed evaluation documentation, see: [`tests/evaluations/README.md`](./te
 ## Development & Community
 
 ### Roadmap & Contributing
+
 - 📋 **[ROADMAP.md](./ROADMAP.md)** - Current milestones and future plans
 - 🐛 **Issues & PRs Welcome** - Help us improve by [raising issues](https://github.com/webup/langgraph-up-react/issues) or submitting pull requests
 - 🤖 **Built with Claude Code** - This template is actively developed using [Claude Code](https://claude.ai/code)
 
 ### Getting Involved
+
 We encourage community contributions! Whether it's:
+
 - Reporting bugs or suggesting features
-- Adding new tools or model integrations  
+- Adding new tools or model integrations
 - Improving documentation
 - Sharing your use cases and templates
 
@@ -449,7 +487,7 @@ Check out our roadmap to see what we're working on next and how you can contribu
 ## Learn More
 
 - [LangGraph Documentation](https://github.com/langchain-ai/langgraph) - Framework guides and examples
-- [LangSmith](https://smith.langchain.com/) - Tracing and collaboration platform  
+- [LangSmith](https://smith.langchain.com/) - Tracing and collaboration platform
 - [ReAct Paper](https://arxiv.org/abs/2210.03629) - Original research on reasoning and acting
 - [Claude Code](https://claude.ai/code) - AI-powered development environment
 
@@ -458,6 +496,7 @@ Check out our roadmap to see what we're working on next and how you can contribu
 This project is built on the shoulders of amazing open-source projects and service platforms:
 
 ### LangChain Official Projects
+
 - **[LangGraph](https://github.com/langchain-ai/langgraph)** - Powerful agent graph construction framework
 - **[LangChain](https://github.com/langchain-ai/langchain)** - Core library for building LLM applications
 - **[AgentEvals](https://github.com/langchain-ai/agentevals)** - Agent evaluation framework providing LLM-as-Judge methodology
@@ -465,10 +504,12 @@ This project is built on the shoulders of amazing open-source projects and servi
 - **[LangSmith](https://smith.langchain.com/)** - LLM application tracing and debugging platform
 
 ### LangChain Community Integrations
+
 - **[langchain-siliconflow](https://pypi.org/project/langchain-siliconflow/)** - SiliconFlow model integration for open-source model support
 - **[langchain-qwq](https://pypi.org/project/langchain-qwq/)** - Alibaba Cloud Bailian platform model integration for Qwen series
 
 ### MaaS Platform Services
+
 - **SiliconFlow** - Chinese MaaS platform providing open-source models
 - **Alibaba Cloud Bailian (DashScope)** - Qwen series model service platform
 
